@@ -15,7 +15,7 @@ print boto.Version
 print mturk.get_account_balance()
 
 
-URL = "file:///Users/SaiBhargavi/Desktop/ExternalQTrial/sample_task_with_submit.html"
+URL = "https://sai-v.github.io/Sample1/"
 title = "A special hit!"
 description = "The more verbose description of the job!"
 keywords = ["cats", "dogs", "rabbits"]
