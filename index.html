@@ -1,11 +1,107 @@
 <h1>Hello Sai<h1>
- 
-<h4>Thanks for working on this task!</h4>
-<form name='mturk_form' id="mturk_form" method="post" action='https://www.mturk.com/mturk/externalSubmit'>
-    <input type="hidden" name="user_id" id="user_id" />
-    <input type="hidden" name="assignmentId" value="{{assignmentId}}" />
-    <textarea name="feedback" rows=10 cols=60 placeholder="Enter any feedback you have about the task here"></textarea>
-    <br /><br />
-    <input type="submit" value="Submit">Finish and Submit HIT<input/>
-</form>
- 
+ <!-- Bootstrap v3.0.3 -->
+<link href="https://s3.amazonaws.com/mturk-public/bs30/css/bootstrap.min.css" rel="stylesheet" />
+
+<script >
+var form_selector = "#mturk_form";
+
+// function for getting URL parameters
+function gup(name) {
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.href);
+    if(results == null)
+	return "";
+    else return unescape(results[1]);
+}
+
+//  Turkify the captioning page.
+$(document).ready(function () {
+	// is assigntmentId is a URL parameter
+	if((aid = gup("assignmentId"))!="" && $(form_selector).length>0) {
+	    
+	    // If the HIT hasn't been accepted yet, disabled the form fields.
+	    if(aid == "ASSIGNMENT_ID_NOT_AVAILABLE") {
+		$('input,textarea,select').attr("DISABLED", "disabled");
+		$(':submit').val("Please accept this HIT to continue.");
+	    }
+	    
+	    // Add a new hidden input element with name="assignmentId" that
+	    // with assignmentId as its value.
+	    var aid_input = $("<input type='hidden' name='assignmentId' value='" + aid + "'>").appendTo($(form_selector));
+
+	    // Make sure the submit form's method is POST
+	    $(form_selector).attr('method', 'POST');
+
+	    // Set the Action of the form to the provided "turkSubmitTo" field
+	    if((submit_url=gup("turkSubmitTo"))!="") {
+		$(form_selector).attr('action', submit_url + '/mturk/externalSubmit');
+	    }
+	}
+    });
+</script>
+
+<section class="container" id="Other" style="margin-bottom:15px; padding: 10px 10px; font-family: Verdana, Geneva, sans-serif; color:#333333; font-size:0.9em;">
+<div class="row col-xs-12 col-md-12"><!-- Instructions -->
+<div class="panel panel-primary">
+<div class="panel-heading"><strong>Instructions</strong></div>
+
+<div class="panel-body">
+<p>Enter instructions for your HIT. It is a good idea to:</p>
+<h3>Identify the number of recognizable people in each image.</h3>
+<ul>
+<li>Enter the answer in the text box provided below the image.</li>
+<li>Enter the answer in digits and not in words<br/>
+	Example: <br/>
+	5 - Treated as correct<br/>
+    Five - Treated as incorrect
+	</li>
+	<li>Include your interpretation in identifying the recognizable people (Factors you considered to count the people)
+	in the text area provided at the end.</li>
+	There is a BONUS for the most accurate answer....!!!
+		</ul>
+</div>
+</div>
+<!-- End Instructions --><!-- Content Body -->
+
+<section>
+
+<form id="mturk_form" action="turkSubmitTo()" method="POST">
+
+<fieldset>
+
+<div class="input-group" style="font-size: 0.9em;">
+<table cellpadding = "10" spacing = 20>
+<tr>
+<td>
+<label><img src = "people1.jpg" height=400 width = 500/> <br/>Image 1 </label>
+<input class="form-control" name="Answer1" size="120" type="text" />
+</td>
+<td>
+<label><img src = "people2.jpg" height=400 width = 500> Image 2 </label>
+<input class="form-control" name="Answer2" size="120" type="text" />
+</td>
+ </tr>
+<tr>
+<td>
+<label><img src = "people3.jpg" height=400 width = 500> Image 3 </label>
+<input class="form-control" name="Answer3" size="120" type="text" />
+<td/>
+<td>
+<label><img src = "people4.jpg" height=400 width = 500> Image 4 </label>
+<input class="form-control" name="Answer4" size="120" type="text" />
+</td>
+</tr>
+<tr>
+<td colspan = "2">
+ <input type = "submit" id = "submit"/></td></tr>
+</table></div>
+</fieldset>
+
+<fieldset>&nbsp;</fieldset>
+
+
+<!-- close container -->
+<style type="text/css">fieldset { padding: 10px; background:#fbfbfb; border-radius:5px; margin-bottom:5px; }
+</style>
